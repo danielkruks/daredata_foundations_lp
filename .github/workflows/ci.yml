@@ -22,4 +22,4 @@ jobs:
       - name: Run pytest
         run: pytest --cov
       - name: Run pylint
-        run: pylint assignments/life_expectancy
+        run: pylint life_expectancy
