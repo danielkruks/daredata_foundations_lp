@@ -1,3 +1,5 @@
+[![CI](https://github.com/danielkruks/daredata_foundations_lp/actions/workflows/ci.yml/badge.svg)](https://github.com/danielkruks/daredata_foundations_lp/actions/workflows/ci.yml)
+
 # Foundations Learning Path
 
 Welcome to the Foundations Learning Path 🎉
