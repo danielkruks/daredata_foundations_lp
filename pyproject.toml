@@ -10,7 +10,7 @@ authors = [
 
 [project.optional-dependencies]
 dev = ["pytest", "pylint", "pytest-cov", "toml"]
-dependencies = ["pandas"]
+dependencies = ["pandas", "argparse"]
 
 [tool.coverage.run]
 omit = [
