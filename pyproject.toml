@@ -7,10 +7,10 @@ description = "First assignment of the Foundations Learning Path"
 authors = [
     {name = "Daniel Kruk", email = "danielkruk4work@gmail.com"}
 ]
+dependencies = ["pandas", "argparse"]
 
 [project.optional-dependencies]
 dev = ["pytest", "pylint", "pytest-cov", "toml"]
-dependencies = ["pandas", "argparse"]
 
 [tool.coverage.run]
 omit = [
