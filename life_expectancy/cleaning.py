@@ -4,41 +4,55 @@ and filter based on country preference, subsetting a .csv file output'''
 import argparse
 import pandas as pd
 
-def clean_data(country: str = 'PT'):
-    '''Function to clean life expectancy data and filter for Portugal'''
-    # 2.i.
-    lfex = pd.read_csv('./life_expectancy/data/eu_life_expectancy_raw.tsv', sep='\t')
 
-    # 2.ii.
-    lfex[['unit', 'sex', 'age', 'geo']] = lfex.iloc[:, 0].str.split(',', expand=True)
+# Breaking down the original function into three splits (assignment2)
+def load_data(data_path: str) -> pd.DataFrame:
+    """Loads the life expectancy data."""
+    if data_path.endswith(".tsv"):
+        lfex_data = pd.read_csv(data_path, sep='\t')
+    else:
+        raise ValueError("Unsupported file format")
+    return lfex_data
 
-    lfex = lfex.drop(columns=lfex.columns[0])
 
-    lfex_melted = pd.melt(
-        lfex,
+def clean_data(df: pd.DataFrame) -> pd.DataFrame:
+    """Cleans the data from the life expectancy dataset."""
+    # Splitting the first column into multiple columns (2.ii.)
+    df[['unit', 'sex', 'age', 'geo']] = df.iloc[:, 0].str.split(',', expand=True)
+
+    df = df.drop(columns=df.columns[0])
+
+    df_melted = pd.melt(
+        df,
         id_vars=['unit', 'sex', 'age', 'geo'],
         var_name='year',
         value_name='value'
     )
 
-    lfex_melted.rename(columns={'geo': 'region'}, inplace=True)
+    df_melted.rename(columns={'geo': 'region'}, inplace=True)
 
-    # 2.iii.
-    lfex_melted['year'] = lfex_melted['year'].astype(int)
+    # Converting 'year' to integer and 'value' to numeric
+    # handling non-numeric values (2.iii. & 2.iv.)
+    df_melted['year'] = df_melted['year'].astype(int)
 
-    # 2.iv.
-    lfex_melted['value'] = pd.to_numeric(lfex_melted['value'].str.replace(
+
+    df_melted['value'] = pd.to_numeric(df_melted['value'].str.replace(
                                         r'[^0-9.]','', regex=True), errors='coerce')
 
-    # 2.v.
-    pt_lfex = lfex_melted[(~lfex_melted['value'].isna()) & (lfex_melted['region'] == country)]
+    return df_melted
 
 
-    # 2.vi.
-    pt_lfex.reset_index(drop=True, inplace=True)
-    pt_lfex.to_csv('./life_expectancy/data/pt_life_expectancy.csv', index=False)
+def save_data(df: pd.DataFrame, country: str):
+    """Saves the cleaned data to a CSV file, for a specific country."""
+    # Subsetting the data for non-null values and the specified country (2.v.)
+    country_data = df[(~df['value'].isna()) & (df['region'] == country)]
 
-if __name__ == "__main__": #pragma: no cover
+    country_data.to_csv(f'./life_expectancy/data/{country.lower()}_life_expectancy.csv',
+                        index=False)
+
+
+def main():
+    """Main function to execute the cleaning process."""
     parser = argparse.ArgumentParser(description="Clean life expectancy data for a given country.")
     parser.add_argument(
         "--country",
@@ -46,5 +60,16 @@ if __name__ == "__main__": #pragma: no cover
         default="PT",
         help="Country code to filter (default: PT)"
     )
+    parser.add_argument(
+        "--data-path",
+        type=str,
+        default="./life_expectancy/data/eu_life_expectancy_raw.tsv",
+        help="Path to the raw data file"
+    )
     args = parser.parse_args()
-    clean_data(args.country)
+    df = load_data(args.data_path)
+    df_clean = clean_data(df)
+    save_data(df_clean, args.country)
+
+if __name__ == "__main__":  # pragma: no cover
+    main()
