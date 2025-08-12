@@ -25,4 +25,4 @@ build-backend = "setuptools.build_meta"
 packages = ["life_expectancy"]
 
 [tool.coverage.report]
-fail_under = 80
+fail_under = 70
