@@ -1,8 +1,8 @@
 '''
 This module contains the testing of the clean_data function.
 '''
-from life_expectancy.cleaner import clean_data
 import pandas as pd
+from life_expectancy.cleaner import clean_data
 
 def test_clean_data_fixture(raw_life_expectancy_eu_file, expected_life_expectancy_eu_file):
     '''
