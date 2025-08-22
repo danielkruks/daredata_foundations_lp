@@ -1,0 +1,9 @@
+
+[dependencies]
+pandas
+
+[dev]
+pytest
+pylint
+pytest-cov
+toml
