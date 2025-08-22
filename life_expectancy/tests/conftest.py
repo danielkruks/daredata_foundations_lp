@@ -1,9 +1,9 @@
 """Pytest configuration file"""
+from pathlib import Path
 import pandas as pd
 import pytest
-from pathlib import Path
 
-from . import FIXTURES_DIR, OUTPUT_DIR
+from . import FIXTURES_DIR
 
 
 @pytest.fixture

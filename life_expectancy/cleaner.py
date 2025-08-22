@@ -1,3 +1,6 @@
+'''
+This module contains the function that cleans the data.
+'''
 import pandas as pd
 
 def clean_data(df: pd.DataFrame, region: str = None) -> pd.DataFrame:
@@ -12,7 +15,9 @@ def clean_data(df: pd.DataFrame, region: str = None) -> pd.DataFrame:
     )
     df_melted.rename(columns={'geo': 'region'}, inplace=True)
     df_melted['year'] = df_melted['year'].astype(int)
-    df_melted['value'] = pd.to_numeric(df_melted['value'].str.replace(r'[^0-9.]','', regex=True), errors='coerce')
+    df_melted['value'] = pd.to_numeric(
+                        df_melted['value'].str.replace(r'[^0-9.]','', regex=True), errors='coerce'
+                        )
     if region is not None:
         df_melted = df_melted[(~df_melted['value'].isna()) & (df_melted['region'] == region)]
     return df_melted

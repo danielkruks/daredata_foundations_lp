@@ -1,3 +1,6 @@
+'''
+This module contains the function that loads the data.
+'''
 import pandas as pd
 
 def load_data(data_path: str) -> pd.DataFrame:

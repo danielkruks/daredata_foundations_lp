@@ -1,3 +1,6 @@
+'''
+This module contains the function that saves the data.
+'''
 from pathlib import Path
 import pandas as pd
 
